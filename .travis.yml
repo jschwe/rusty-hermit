@@ -21,5 +21,6 @@ script:
     - groups
     - ls -l /dev/kvm
     - sudo ls -la /var/run/libvirt/libvirt-sock
+    - which uhyve
     # used to get terminal with new groups permissions while preserving own user
-    - sudo -E sudo -u $USER -E bash -c "uhyve target/x86_64-unknown-hermit/debug/rusty_demo"
+    - sudo -E sudo -u $USER -E bash -c "$HOME/.cargo/bin/uhyve target/x86_64-unknown-hermit/debug/rusty_demo"
