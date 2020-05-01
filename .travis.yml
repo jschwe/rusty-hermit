@@ -23,5 +23,6 @@ script:
     - ls -l /dev/kvm
     - sudo ls -la /var/run/libvirt/libvirt-sock
     - which uhyve
+    - lscpu
     # used to get terminal with new groups permissions while preserving own user
     - sudo -E sudo -u $USER -E bash -c "HERMIT_VERBOSE=1 $HOME/.cargo/bin/uhyve target/x86_64-unknown-hermit/debug/rusty_demo"
