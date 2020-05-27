@@ -10,15 +10,14 @@
 
 #[cfg(target_os = "hermit")]
 extern crate hermit_sys;
-extern crate rand;
-extern crate rayon;
 #[cfg(target_os = "linux")]
 #[macro_use]
 extern crate syscalls;
 
-mod tests;
+//mod tests;
 
-use tests::*;
+//use tests::*;
+use hermit_sys::sys_capture_coverage;
 
 fn test_result<T>(result: Result<(), T>) -> &'static str {
 	match result {

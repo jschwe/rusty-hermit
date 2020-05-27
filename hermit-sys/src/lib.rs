@@ -33,6 +33,25 @@ impl log::Log for SysLogger {
 	}
 }
 
+
+#[no_mangle]
+pub extern "C" fn sys_minicov_init() {
+	unsafe {
+		minicov::run_static_constructors();
+	}
+}
+
+pub fn sys_capture_coverage() ->  Result<Vec<u8>, ()>
+{
+	let cov = minicov::capture_coverage();
+	if cov.is_err() {
+		Err(())
+	}
+	else {
+		Ok(cov.unwrap())
+	}
+}
+
 #[no_mangle]
 pub extern "C" fn sys_network_init() -> i32 {
 	set_logger(&SysLogger).expect("Can't initialize logger");
