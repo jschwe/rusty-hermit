@@ -3,7 +3,7 @@ members = [
     "hermit-abi",
     "hermit-sys",
     "demo",
-    "netbench",
+    #"netbench",
 ]
 exclude = ["target", "loader", "libhermit-rs"]
 

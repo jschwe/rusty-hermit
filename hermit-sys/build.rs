@@ -75,7 +75,9 @@ fn build() {
 		.arg("--target")
 		.arg("x86_64-unknown-hermit-kernel")
 		.arg("--target-dir")
-		.arg(target_dir);
+		.arg(target_dir)
+		.env("RUSTC_WRAPPER", "/home/jonathan/Dev/rustc_wrapper")
+		.env("CARGO_INCREMENTAL", "0");
 
 	if profile == "release" {
 		cmd.arg("--release");
