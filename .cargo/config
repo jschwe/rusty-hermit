@@ -1,8 +1,8 @@
 [unstable]
-build-std = ["std", "core", "alloc", "panic_abort"]
+build-std = ["std", "core", "alloc", "panic_abort", "test"]
 
 [build]
 target = "x86_64-unknown-hermit"
 
 [target.x86_64-unknown-hermit]
-runner = "uhyve -v"
+runner = "python3 tests/test_runner.py"

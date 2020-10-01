@@ -20,6 +20,7 @@ extern "Rust" {
 extern "C" {
 	fn sys_rand() -> u32;
 	fn sys_srand(seed: u32);
+	fn sys_environment_is_uhyve() -> u32; // bool
 	fn sys_get_processor_count() -> usize;
 	fn sys_malloc(size: usize, align: usize) -> *mut u8;
 	fn sys_realloc(ptr: *mut u8, size: usize, align: usize, new_size: usize) -> *mut u8;
@@ -460,4 +461,13 @@ pub unsafe fn secure_rand32() -> Option<u32> {
 #[inline(always)]
 pub unsafe fn secure_rand64() -> Option<u64> {
 	sys_secure_rand64()
+}
+
+#[inline(always)]
+pub unsafe fn environment_is_uhyve() -> Option<bool> {
+	match sys_environment_is_uhyve() {
+		0 => Some(false),
+		1 => Some(true), 
+		_ => None,
+	}
 }
