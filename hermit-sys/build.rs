@@ -89,6 +89,12 @@ fn build_hermit(src_dir: &Path, target_dir_opt: Option<&Path>) {
 		cmd.arg("vga");
 	}
 
+	#[cfg(feature = "aarch64-qemu-stdout")]
+	{
+		cmd.arg("--features");
+		cmd.arg("aarch64-qemu-stdout");
+	}
+
 	#[cfg(feature = "instrument")]
 	{
 		cmd.env("RUSTFLAGS", "-Z instrument-mcount");
