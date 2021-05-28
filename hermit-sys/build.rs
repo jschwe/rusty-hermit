@@ -89,32 +89,20 @@ fn build_hermit(src_dir: &Path, target_dir_opt: Option<&Path>) {
 		cmd.arg("vga");
 	}
 
-	let mut rustflags = Vec::new();
-	rustflags.push("-Zmutable-noalias=no".to_string());
-
 	#[cfg(feature = "instrument")]
 	{
-		rustflags.push("-Zinstrument-mcount".to_string());
-		// Add outer `RUSTFLAGS` to command
-		if let Ok(var) = env::var("RUSTFLAGS") {
-			rustflags.push(var);
-		}
+		cmd.env("RUSTFLAGS", "-Z instrument-mcount");
 	}
-
+	// if instrument is not set, ensure that instrument is not in environment variables!
 	#[cfg(not(feature = "instrument"))]
 	{
-		// If the `instrument` feature feature is not enabled,
-		// filter it from outer `RUSTFLAGS` before adding them to the command.
-		if let Ok(var) = env::var("RUSTFLAGS") {
-			let flags = var
-				.split(',')
-				.filter(|&flag| !flag.contains("instrument-mcount"))
-				.map(String::from);
-			rustflags.extend(flags);
-		}
+		cmd.env(
+			"RUSTFLAGS",
+			env::var("RUSTFLAGS")
+				.unwrap_or_else(|_| "".into())
+				.replace("-Z instrument-mcount", ""),
+		);
 	}
-
-	cmd.env("RUSTFLAGS", rustflags.join(","));
 
 	let output = cmd.output().expect("Unable to build kernel");
 	let stdout = std::string::String::from_utf8(output.stdout);
